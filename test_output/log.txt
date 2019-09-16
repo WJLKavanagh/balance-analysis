@@ -1,0 +1,28 @@
+PRISM-games
+===========
+
+Version: 4.4.dev
+Date: Wed Sep 11 15:06:27 BST 2019
+Hostname: william-XPS-15-9570
+Memory limits: cudd=1g, java(heap)=5g
+Command line: prism-games test_output/KA_dominance_check.prism ../../properties/smg.props -prop 1 -exportadvmdp test_output/tmp.tra -exportstates test_output/tmp.sta -javamaxmem 5g -nopre -maxiters 300000
+
+Parsing model file "test_output/KA_dominance_check.prism"...
+
+Parsing properties file "../../properties/smg.props"...
+
+4 properties:
+(1) <<p1>> Pmax=? [ F "p1_wins" ]
+(2) <<p2>> Pmax=? [ F "p2_wins" ]
+(3) <<p1>> Pmax=? [ F "p1_wins" ]+<<p2>> Pmax=? [ F "p2_wins" ]
+(4) Pmax=? [ F "deadlock"&!"p1_wins"&!"p2_wins" ]
+
+Type:        SMG
+Modules:     game 
+Variables:   turn p1K p1A p1W p1R p1H p1M p1B p1G p1_stun p2K p2A p2W p2R p2H p2M p2B p2G p2_stun 
+
+Switching to explicit engine, which supports SMGs...
+
+Building model...
+
+Computing reachable states...
