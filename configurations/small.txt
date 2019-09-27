@@ -1,0 +1,36 @@
+const int Knight_health = 5;
+const int Knight_damage = 2;
+const double Knight_accuracy = 0.7;
+
+const int Archer_health = 4;
+const int Archer_damage = 1;
+const double Archer_accuracy = 0.9;
+
+const int Wizard_health = 4;
+const int Wizard_damage = 1;
+const double Wizard_accuracy = 0.85;
+
+const int Rogue_health = 4;
+const int Rogue_damage = 1;
+const int Rogue_execute = 2;
+const double Rogue_accuracy = 0.85;
+
+const int Healer_health = 3;
+const int Healer_damage = 2;
+const int Healer_heal = 1;
+const double Healer_accuracy = 0.8;
+
+const int Monk_health = 4;
+const int Monk_damage = 1;
+const double Monk_accuracy = 0.65;
+
+const int Barbarian_health = 5;
+const int Barbarian_damage = 1;
+const int Barbarian_rage_threshold = 2;
+const int Barbarian_rage_damage = 3;
+const double Barbarian_accuracy = 0.8;
+
+const int Gunner_health = 4;
+const int Gunner_damage = 2;
+const int Gunner_miss = 1;
+const double Gunner_accuracy = 0.7;

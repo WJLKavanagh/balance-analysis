@@ -84,7 +84,7 @@ def do_prefix(team, config):
     f.write("// Comment:\tThis file is a generator for an optimal strategy for " + team + "\n")
     f.write("\n// Configuration " + config.upper() + ":\n" + "\n")
     f.write("smg" + "\n")
-    f.write(open("../configurations/" + config + ".txt", "r").read() + "\n")
+    f.write(open("configurations/" + config + ".txt", "r").read() + "\n")
     do_player(1,team)
     do_player(2,team)
     f.write("player sys" + "\n")
