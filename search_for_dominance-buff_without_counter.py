@@ -1,5 +1,5 @@
 # William Kavanagh, May 2019
-# Extended CSG - Can we identify dominant strategies without iterating?
+# Extended CSG - Balance chars without a pair with an optimal value above a 'viability threshold'
 import re
 import pandas as pd
 import networkx as nx
@@ -42,7 +42,7 @@ def run(config, output):
         # Model generated. Now model check.
         os.system("prism " + output + "/" + file_name + " smg.props \
         -prop 1 -exportadvmdp " + output + "/tmp.tra -exportstates " + output + \
-        "/tmp.sta -javamaxmem 5g -nopre -maxiters 300000 > " + output + "/log.txt")
+        "/tmp.sta -javamaxmem 4g -nopre -maxiters 30000 > " + output + "/log.txt")
 
         # Find best pair and optimal probability
 
@@ -110,22 +110,38 @@ def suggest_balance(res):
     # Dominant check
     chars = ["K","A","W","R","H","M","B","G"]
     pairs = res.keys()
-    for pair in pairs:
-        if float(res[pair]["res"]) > 0.499:
-            print("Nerfing dominant pair: " + pair)
-            return [0], pair, True
-    viable_pairs = [p for p in pairs if float(res[p]["res"]) > 0.4]
-    print("Viable pairs: " + str(viable_pairs))
-    nerf = {c for c in [p for p in str(viable_pairs)] if c in chars}
-    buff = [c for c in chars if c not in nerf]
-    print("Buffing: " + str(buff))
-    return(buff,[0],0)
+    buff = []
+    nerf = []
+    counters_count = {}                     #  count how many times each pair is used in a counter.
+    for c in chars:
+        counters_count[c] = 0
+    for p in pairs:
+        if float(res[p]["res"]) > 0.499:           # Dominant pair
+            print("Nerfing dominant pair: " + p)
+            return [0], p, True
+        counter = res[p]["opp"]
+        for x in counter:
+            counters_count[x] += 1          # count of counters finished.
+    print(counters_count)
+    for c in chars:
+        if counters_count[c] == 0:
+            buff += [c]
+        elif counters_count[c] > 20:
+            nerf += [c]
+    print("buffing: " + str(buff) + " -- nerfing: " + str(nerf))
+    return buff, nerf, False
 
 def enact_balance(file, buff, nerf, dom):
     old = open("configurations/" + file + ".txt", "r").readlines()
-    if file[-1].isdigit() and file[-2] == "_": file = file[:-1] + str(int(file[-1])+1)
+    if file[-1].isdigit():                          # Sort file name
+        num_string = ""
+        for i in range(len(file)-1,-1,-1):
+            if file[i].isdigit(): num_string = file[i] + num_string
+            else:
+                break
+        file = file[:-len(num_string)] + str(int(num_string)+1)
     else: file = file + "_1"
-    new = open("configurations/" + file + ".txt", "w")
+    new = open("configurations/" + file + ".txt", "w")  # file name sorted, new file opened for writing.
     for line in old:
         if "accuracy" in line and line[13] in buff:
             cut = line.index(".")
@@ -134,8 +150,12 @@ def enact_balance(file, buff, nerf, dom):
             new.write(new_line)
         elif "accuracy" in line and line[13] in nerf:
             cut = line.index(".")
-            if float(line[cut:-2]) <= 0.1: return (line[13], False)
-            new_line = line[:cut-1] + str(float(line[cut:-2])-.1) + ";\n"
+            if dom:         # if dominant, nerf by 10%
+                if float(line[cut:-2]) <= 0.1: return (line[13], False)
+                new_line = line[:cut-1] + str(float(line[cut:-2])-.1) + ";\n"
+            else:           # if not dominant, but too strong, nerf by 1%
+                if float(line[cut:-2]) <= 0.01: return (line[13], False)
+                new_line = line[:cut-1] + str(float(line[cut:-2])-.01) + ";\n"
             new.write(new_line)
         else:
             new.write(line)

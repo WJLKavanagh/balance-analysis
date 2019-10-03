@@ -2,12 +2,12 @@ PRISM-games
 ===========
 
 Version: 4.4.dev
-Date: Fri Sep 27 14:04:21 BST 2019
+Date: Thu Oct 03 01:32:50 BST 2019
 Hostname: wkav-B250M-D2V
 Memory limits: cudd=1g, java(heap)=4g
-Command line: prism-games test_output/KR_dominance_check.prism smg.props -prop 1 -exportadvmdp test_output/tmp.tra -exportstates test_output/tmp.sta -javamaxmem 4g -nopre -maxiters 30000
+Command line: prism-games test_output/BG_dominance_check.prism smg.props -prop 1 -exportadvmdp test_output/tmp.tra -exportstates test_output/tmp.sta -javamaxmem 4g -nopre -maxiters 30000
 
-Parsing model file "test_output/KR_dominance_check.prism"...
+Parsing model file "test_output/BG_dominance_check.prism"...
 
 Parsing properties file "smg.props"...
 
@@ -25,4 +25,39 @@ Switching to explicit engine, which supports SMGs...
 
 Building model...
 
-Computing reachable states... 61490 130318 200692 272927
+Computing reachable states... 68683 144258 222274 304129 382041 461788 542091 620711 700140 710686 states
+Reachable states exploration and model construction done in 27.396 secs.
+Sorting reachable states list...
+
+Time for model construction: 28.998 seconds.
+
+Warning: Deadlocks detected and fixed in 5485 states
+
+Type:        SMG
+States:      710686 (1 initial)
+Transitions: 5488704
+Choices:     2939587
+Max/avg:     28/4.14
+
+Exporting list of reachable states in plain text format to file "test_output/tmp.sta"...
+
+---------------------------------------------------------------------
+
+Model checking: <<p1>> Pmax=? [ F "p1_wins" ]
+
+Starting probabilistic reachability...
+target=164, yes=164, no=0, maybe=710522
+Starting value iteration (maxmin)...
+Value iteration (maxmin) took 183 iterations and 46.262 seconds.
+Probabilistic reachability took 46.476 seconds.
+
+Value in the initial state: 0.4427892794813787
+
+Time for model checking: 46.512 seconds.
+
+Result: 0.4427892794813787 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Note: There was 1 warning during computation.
+
